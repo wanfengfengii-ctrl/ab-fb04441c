@@ -1,0 +1,494 @@
+:root {
+  --bg: #0f141b;
+  --panel: #171e28;
+  --panel-border: #26303d;
+  --text: #dce3ec;
+  --text-dim: #8b98a8;
+  --accent: #4f9cff;
+  --accent-strong: #2f7fe0;
+  --ok: #3fb96f;
+  --warn: #e0a83c;
+  --bad: #e05c5c;
+  --cell-bg: #10161f;
+  --cell-border: #2a3542;
+  font-size: 15px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+}
+
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 20px 40px;
+}
+
+.app-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+.app-header p {
+  margin: 0 0 18px;
+  color: var(--text-dim);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(360px, 5fr) minmax(460px, 7fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-strong);
+  color: #fff;
+  font-size: 0.8rem;
+  flex: none;
+}
+
+.hint {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  appearance: none;
+  border: 1px solid var(--panel-border);
+  background: #1e2733;
+  color: var(--text);
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.btn-small {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
+
+.btn-solve {
+  width: 100%;
+  padding: 11px;
+  font-size: 1.02rem;
+  margin-top: 12px;
+}
+
+/* ---------- 剂量图编辑 ---------- */
+.grid-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.grid-controls label,
+.aperture-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+select,
+input[type='number'] {
+  background: var(--cell-bg);
+  border: 1px solid var(--cell-border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.92rem;
+}
+
+select:focus,
+input[type='number']:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.cell-input-table {
+  border-collapse: separate;
+  border-spacing: 5px;
+}
+
+.cell-input-table input {
+  width: 52px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.total-line {
+  margin-top: 10px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.total-over {
+  color: var(--bad);
+  font-weight: 600;
+}
+
+/* ---------- 孔径编辑 ---------- */
+.aperture-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aperture-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aperture-row input {
+  width: 64px;
+  text-align: center;
+}
+
+.aperture-index {
+  color: var(--text-dim);
+  width: 28px;
+  font-variant-numeric: tabular-nums;
+}
+
+.times {
+  color: var(--text-dim);
+}
+
+.aperture-actions {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------- 导入导出 ---------- */
+.import-box {
+  width: 100%;
+  background: var(--cell-bg);
+  border: 1px solid var(--cell-border);
+  color: var(--text);
+  border-radius: 7px;
+  padding: 10px;
+  font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.io-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.file-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-btn input[type='file'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.notice-line {
+  margin-top: 10px;
+  color: var(--ok);
+  font-size: 0.9rem;
+}
+
+/* ---------- 校验与状态 ---------- */
+.error-list {
+  margin: 0 0 4px;
+  padding-left: 20px;
+  color: var(--bad);
+  font-size: 0.9rem;
+}
+
+.ready-line {
+  color: var(--ok);
+  font-size: 0.92rem;
+}
+
+.status-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  border: 1px solid;
+}
+
+.status-banner strong {
+  font-size: 1.05rem;
+}
+
+.status-unique {
+  border-color: var(--ok);
+  background: rgba(63, 185, 111, 0.12);
+}
+
+.status-unique strong {
+  color: var(--ok);
+}
+
+.status-tied {
+  border-color: var(--warn);
+  background: rgba(224, 168, 60, 0.1);
+}
+
+.status-tied strong {
+  color: var(--warn);
+}
+
+.status-infeasible {
+  border-color: var(--bad);
+  background: rgba(224, 92, 92, 0.1);
+}
+
+.status-infeasible strong {
+  color: var(--bad);
+}
+
+.stats-line {
+  margin: 10px 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.solution-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 4px;
+}
+
+/* ---------- 击发步进 ---------- */
+.stepper {
+  margin: 12px 0;
+}
+
+.stepper-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.step-info {
+  margin: 10px 0 8px;
+  font-size: 0.95rem;
+}
+
+.step-info code {
+  background: var(--cell-bg);
+  border: 1px solid var(--cell-border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 0.85rem;
+}
+
+.progress-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--cell-bg);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+/* ---------- 剂量展示格 ---------- */
+.grids-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 6px 0 14px;
+}
+
+.dose-grid {
+  margin: 0;
+}
+
+.dose-grid figcaption {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.dose-grid table {
+  border-collapse: separate;
+  border-spacing: 4px;
+}
+
+.dose-cell {
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 6px;
+  border: 1px solid var(--cell-border);
+  background: var(--cell-bg);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
+}
+
+.dose-cell.tone-cumulative {
+  border-color: #2c4a6e;
+  background: #122031;
+}
+
+.dose-cell.cell-todo {
+  border-color: #6e5426;
+  background: #241d10;
+  color: var(--warn);
+}
+
+.dose-cell.cell-done {
+  border-color: #265738;
+  background: #10241a;
+  color: var(--ok);
+}
+
+.dose-cell.hl {
+  box-shadow: 0 0 0 2px var(--accent);
+  border-color: var(--accent);
+}
+
+.dose-footer {
+  margin-top: 6px;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+/* ---------- 击发表 ---------- */
+.shot-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 420px;
+  font-variant-numeric: tabular-nums;
+}
+
+.shot-table th,
+.shot-table td {
+  border: 1px solid var(--panel-border);
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.shot-table th {
+  color: var(--text-dim);
+  font-weight: 500;
+  background: var(--cell-bg);
+}
+
+.shot-table tbody tr {
+  cursor: pointer;
+}
+
+.shot-table tbody tr:hover {
+  background: #1c2634;
+}
+
+.shot-table tr.done td {
+  color: var(--text-dim);
+}
+
+.shot-table tr.active td {
+  background: rgba(79, 156, 255, 0.16);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.app-footer {
+  margin-top: 22px;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}

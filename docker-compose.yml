@@ -1,0 +1,32 @@
+name: ebl-dose-synthesis
+
+services:
+  # 静态站点：电子束直写剂量综合台
+  web:
+    build:
+      context: .
+      target: web
+    image: ebl-dose-synthesis-web
+    ports:
+      # 宿主机端口可配置：HOST_PORT=9000 docker compose up -d web
+      - "${HOST_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    restart: unless-stopped
+
+  # 一次性验证服务：代码测试 + 构建检查 + HTTP 冒烟，结束后自行退出并以退出码报告结果
+  verify:
+    build:
+      context: .
+      target: verify
+    image: ebl-dose-synthesis-verify
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      WEB_URL: "http://web:80"
+    restart: "no"
