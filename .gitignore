@@ -3,6 +3,9 @@
 .venv/
 venv/
 node_modules/
+dist/
+*.tsbuildinfo
+.npm-cache/
 __pycache__/
 .pytest_cache/
 .mypy_cache/

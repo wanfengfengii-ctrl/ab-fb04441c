@@ -1,0 +1,35 @@
+services:
+  # 静态站点：宿主机端口可通过环境变量 HOST_PORT 配置（默认 8080）
+  web:
+    build:
+      context: .
+      target: web
+    image: ebl-dose-synthesizer:web
+    ports:
+      - "${HOST_PORT:-8080}:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:80/"]
+      interval: 5s
+      timeout: 3s
+      start_period: 3s
+      retries: 5
+
+  # 一次性核验：代码测试 + 构建检查 + HTTP 冒烟，跑完自行退出，退出码即结论
+  # 用法：
+  #   docker compose --profile verify run --rm verify
+  # 或（以 verify 退出码作为 compose 退出码）：
+  #   docker compose --profile verify up \
+  #     --abort-on-container-exit --exit-code-from verify verify
+  verify:
+    profiles: ["verify"]
+    build:
+      context: .
+      target: verify
+    image: ebl-dose-synthesizer:verify
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      SMOKE_URL: http://web:80
+    restart: "no"
